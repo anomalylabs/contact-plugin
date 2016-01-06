@@ -4,6 +4,7 @@ use Anomaly\ContactPlugin\Form\Command\BuildMessage;
 use Anomaly\ContactPlugin\Form\Command\GetMessageData;
 use Anomaly\ContactPlugin\Form\Command\GetMessageView;
 use Anomaly\Streams\Platform\Message\MessageBag;
+use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Mail\Mailer;
@@ -29,7 +30,7 @@ class ContactFormHandler implements SelfHandling
      * @param MessageBag         $messages
      * @param Mailer             $mailer
      */
-    public function handle(ContactFormBuilder $builder, MessageBag $messages, Mailer $mailer)
+    public function handle(FormBuilder $builder, MessageBag $messages, Mailer $mailer)
     {
         // Validation failed!
         if ($builder->hasFormErrors()) {
