@@ -17,6 +17,11 @@
             "role": "Owner"
         }
     ],
+    "require": {
+        "anomaly/streams-platform": "~1.1",
+        "anomaly/settings-module": "~2.1",
+        "robclancy/presenter": "~1.3"
+    },
     "support": {
         "email": "support@anomaly.is"
     },
