@@ -26,30 +26,30 @@ class ContactFormBuilder extends FormBuilder
      */
     protected $fields = [
         'name'    => [
-            'label'    => 'Name',
+            'label'    => 'visiosoft.plugin.contact::field.name.name',
             'type'     => 'anomaly.field_type.text',
             'required' => true,
         ],
         'email'   => [
-            'label'    => 'Email',
+            'label'    => 'visiosoft.plugin.contact::field.email.name',
             'type'     => 'anomaly.field_type.email',
             'required' => true,
         ],
         'subject' => [
-            'label'    => 'Subject',
+            'label'    => 'visiosoft.plugin.contact::field.subject.name',
             'type'     => 'anomaly.field_type.select',
             'required' => true,
             'config'   => [
                 'options' => [
-                    'Support',
-                    'Sales',
-                    'Feedback',
-                    'Other',
+                    'visiosoft.plugin.contact::field.subject.options.support',
+                    'visiosoft.plugin.contact::field.subject.options.sales',
+                    'visiosoft.plugin.contact::field.subject.options.feedback',
+                    'visiosoft.plugin.contact::field.subject.options.other',
                 ],
             ],
         ],
         'message' => [
-            'label'    => 'Message',
+            'label'    => 'visiosoft.plugin.contact::field.message.name',
             'type'     => 'anomaly.field_type.textarea',
             'required' => true,
         ],
