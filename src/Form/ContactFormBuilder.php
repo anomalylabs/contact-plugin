@@ -26,30 +26,33 @@ class ContactFormBuilder extends FormBuilder
      */
     protected $fields = [
         'name'    => [
-            'label'    => 'visiosoft.plugin.contact::field.name.name',
+
+            'label'    => 'anomaly.plugin.contact::field.name.name',
             'type'     => 'anomaly.field_type.text',
             'required' => true,
         ],
         'email'   => [
-            'label'    => 'visiosoft.plugin.contact::field.email.name',
+            'label'    => 'anomaly.plugin.contact::field.email.name',
             'type'     => 'anomaly.field_type.email',
             'required' => true,
         ],
         'subject' => [
-            'label'    => 'visiosoft.plugin.contact::field.subject.name',
+
+            'label'    => 'anomaly.plugin.contact::field.subject.name',
             'type'     => 'anomaly.field_type.select',
             'required' => true,
             'config'   => [
                 'options' => [
-                    'visiosoft.plugin.contact::field.subject.options.support',
-                    'visiosoft.plugin.contact::field.subject.options.sales',
-                    'visiosoft.plugin.contact::field.subject.options.feedback',
-                    'visiosoft.plugin.contact::field.subject.options.other',
+                    'anomaly.plugin.contact::field.subject.options.support',
+                    'anomaly.plugin.contact::field.subject.options.sales',
+                    'anomaly.plugin.contact::field.subject.options.feedback',
+                    'anomaly.plugin.contact::field.subject.options.other',
                 ],
             ],
         ],
         'message' => [
-            'label'    => 'visiosoft.plugin.contact::field.message.name',
+
+            'label'    => 'anomaly.plugin.contact::field.message.name',
             'type'     => 'anomaly.field_type.textarea',
             'required' => true,
         ],
