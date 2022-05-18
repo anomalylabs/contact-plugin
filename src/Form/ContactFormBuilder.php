@@ -26,30 +26,30 @@ class ContactFormBuilder extends FormBuilder
      */
     protected $fields = [
         'name'    => [
-            'label'    => 'Name',
+            'label'    => 'anomaly.plugin.contact::field.name.name',
             'type'     => 'anomaly.field_type.text',
             'required' => true,
         ],
         'email'   => [
-            'label'    => 'Email',
+            'label'    => 'anomaly.plugin.contact::field.email.name',
             'type'     => 'anomaly.field_type.email',
             'required' => true,
         ],
         'subject' => [
-            'label'    => 'Subject',
+            'label'    => 'anomaly.plugin.contact::field.subject.name',
             'type'     => 'anomaly.field_type.select',
             'required' => true,
             'config'   => [
                 'options' => [
-                    'Support',
-                    'Sales',
-                    'Feedback',
-                    'Other',
+                    'anomaly.plugin.contact::field.subject.options.support',
+                    'anomaly.plugin.contact::field.subject.options.sales',
+                    'anomaly.plugin.contact::field.subject.options.feedback',
+                    'anomaly.plugin.contact::field.subject.options.other',
                 ],
             ],
         ],
         'message' => [
-            'label'    => 'Message',
+            'label'    => 'anomaly.plugin.contact::field.message.name',
             'type'     => 'anomaly.field_type.textarea',
             'required' => true,
         ],
