@@ -26,6 +26,7 @@ class ContactFormBuilder extends FormBuilder
      */
     protected $fields = [
         'name'    => [
+
             'label'    => 'anomaly.plugin.contact::field.name.name',
             'type'     => 'anomaly.field_type.text',
             'required' => true,
@@ -36,6 +37,7 @@ class ContactFormBuilder extends FormBuilder
             'required' => true,
         ],
         'subject' => [
+
             'label'    => 'anomaly.plugin.contact::field.subject.name',
             'type'     => 'anomaly.field_type.select',
             'required' => true,
@@ -49,6 +51,7 @@ class ContactFormBuilder extends FormBuilder
             ],
         ],
         'message' => [
+
             'label'    => 'anomaly.plugin.contact::field.message.name',
             'type'     => 'anomaly.field_type.textarea',
             'required' => true,
