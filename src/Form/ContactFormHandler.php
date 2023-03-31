@@ -35,12 +35,12 @@ class ContactFormHandler
         }
 
         // Delegate these for now.
-        $view = $this->dispatch(new GetMessageView($builder));
-        $data = $this->dispatch(new GetMessageData($builder));
+        $view = $this->dispatchSync(new GetMessageView($builder));
+        $data = $this->dispatchSync(new GetMessageData($builder));
 
         // Build the message object.
         $message = function (Message $message) use ($builder) {
-            $this->dispatch(new BuildMessage($message, $builder));
+            $this->dispatchSync(new BuildMessage($message, $builder));
         };
 
         // Send the email.

@@ -25,6 +25,9 @@
             "Anomaly\\ContactPlugin\\": "src/"
         }
     },
+    "require": {
+        "anomaly/streams-platform": "^1.8"
+    },
     "extra": {
         "branch-alias": {
             "dev-1.0/master": "1.0.x-dev"
