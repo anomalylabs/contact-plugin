@@ -4,7 +4,6 @@ use Anomaly\ContactPlugin\Form\Command\BuildMessage;
 use Anomaly\ContactPlugin\Form\Command\GetMessageData;
 use Anomaly\ContactPlugin\Form\Command\GetMessageView;
 use Anomaly\Streams\Platform\Message\MessageBag;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 
@@ -17,9 +16,6 @@ use Illuminate\Mail\Message;
  */
 class ContactFormHandler
 {
-
-    use DispatchesJobs;
-
     /**
      * Handle the command.
      *
@@ -35,12 +31,12 @@ class ContactFormHandler
         }
 
         // Delegate these for now.
-        $view = $this->dispatchSync(new GetMessageView($builder));
-        $data = $this->dispatchSync(new GetMessageData($builder));
+        $view = dispatch_sync(new GetMessageView($builder));
+        $data = dispatch_sync(new GetMessageData($builder));
 
         // Build the message object.
         $message = function (Message $message) use ($builder) {
-            $this->dispatchSync(new BuildMessage($message, $builder));
+            dispatch_sync(new BuildMessage($message, $builder));
         };
 
         // Send the email.
