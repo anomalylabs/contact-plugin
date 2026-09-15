@@ -40,10 +40,10 @@ class ContactFormHandler
         };
 
         // Send the email.
-        $mailer->send($view, $data, $message);
+        $sent = $mailer->send($view, $data, $message);
 
-        // If there are any failures, report.
-        if(count($mailer->failures()) > 0) {
+        // If the message was not sent, report.
+        if (!$sent) {
             $messages->error(
                 $builder->getFormOption('error_message', 'anomaly.plugin.contact::error.send_message')
             );
