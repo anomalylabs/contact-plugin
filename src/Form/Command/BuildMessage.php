@@ -3,6 +3,7 @@
 use Anomaly\SettingsModule\Setting\Contract\SettingRepositoryInterface;
 use Anomaly\Streams\Platform\Support\Parser;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Mail\Message;
 
 /**
@@ -46,8 +47,9 @@ class BuildMessage
      *
      * @param  SettingRepositoryInterface  $settings
      * @param  Parser                      $parser
+     * @param  Repository                  $config
      */
-    public function handle(SettingRepositoryInterface $settings, Parser $parser)
+    public function handle(SettingRepositoryInterface $settings, Parser $parser, Repository $config)
     {
         $input = $this->builder->getFormValues()->all();
 
@@ -86,7 +88,7 @@ class BuildMessage
                     'from',
                     $settings->get(
                         'streams::server_email',
-                        'noreply@localhost.com'
+                        $config->get('mail.from.address')
                     )
                 ),
                 $input
