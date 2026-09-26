@@ -2,7 +2,7 @@
 
 {% for field in fields %}
     {# Mind you these are presenters #}
-    <strong>{{ field.getLabel() }}:</strong> {{ field.__print()|raw }}
+    <strong>{{ field.getLabel() }}:</strong> {{ field.__print()|nl2br }}
     <br>
 {% endfor %}
 <hr>
