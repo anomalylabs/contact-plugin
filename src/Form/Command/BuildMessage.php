@@ -55,34 +55,32 @@ class BuildMessage
 
         $recipient = $config->get('anomaly.plugin.contact::contact.email');
 
-        $to = $parser->parse(
-            (array)$this->builder->getOption(
-                'to',
-                $settings->value('streams::contact_email', $recipient) ?: $recipient
-            ),
-            $input
+        $to = $this->addresses(
+            $parser->parse(
+                (array)$this->builder->getOption(
+                    'to',
+                    $settings->value('streams::contact_email', $recipient) ?: $recipient
+                ),
+                $input
+            )
         );
 
-        if (!array_filter($to)) {
+        if (!$to) {
             throw new \RuntimeException(
                 'No contact recipient is configured. Set the contact_email setting, CONTACT_EMAIL, or the form\'s to option.'
             );
         }
 
-        call_user_func_array([$this->message, 'to'], $to);
-
-        if ($cc = (array)$this->builder->getOption('cc', null)) {
-            call_user_func_array(
-                [$this->message, 'cc'],
-                $parser->parse($cc, $input)
-            );
+        foreach ($to as $address) {
+            $this->message->to($address);
         }
 
-        if ($bcc = (array)$this->builder->getOption('bcc', null)) {
-            call_user_func_array(
-                [$this->message, 'bcc'],
-                $parser->parse($bcc, $input)
-            );
+        foreach ($this->addresses($parser->parse((array)$this->builder->getOption('cc', null), $input)) as $address) {
+            $this->message->cc($address);
+        }
+
+        foreach ($this->addresses($parser->parse((array)$this->builder->getOption('bcc', null), $input)) as $address) {
+            $this->message->bcc($address);
         }
 
         $sender = $config->get('mail.from.address');
@@ -103,6 +101,24 @@ class BuildMessage
             (array)$parser->parse(
                 $this->builder->getOption('subject', 'Contact Request'),
                 $input
+            )
+        );
+    }
+
+    /**
+     * Return the valid email addresses from a list.
+     *
+     * @param  array $values
+     * @return array
+     */
+    protected function addresses(array $values)
+    {
+        return array_values(
+            array_filter(
+                array_map('trim', array_filter($values, 'is_string')),
+                function ($value) {
+                    return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+                }
             )
         );
     }
