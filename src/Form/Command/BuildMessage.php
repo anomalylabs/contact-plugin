@@ -53,19 +53,24 @@ class BuildMessage
     {
         $input = $this->builder->getFormValues()->all();
 
-        call_user_func_array(
-            [$this->message, 'to'],
-            $parser->parse(
-                (array)$this->builder->getOption(
-                    'to',
-                    $settings->get(
-                        'streams::contact_email',
-                        env('CONTACT_EMAIL', env('ADMIN_EMAIL'))
-                    )
-                ),
-                $input
-            )
+        $to = $parser->parse(
+            (array)$this->builder->getOption(
+                'to',
+                $settings->get(
+                    'streams::contact_email',
+                    $config->get('anomaly.plugin.contact::contact.email')
+                )
+            ),
+            $input
         );
+
+        if (!array_filter($to)) {
+            throw new \RuntimeException(
+                'No contact recipient is configured. Set the contact_email setting, CONTACT_EMAIL, or the form\'s to option.'
+            );
+        }
+
+        call_user_func_array([$this->message, 'to'], $to);
 
         if ($cc = (array)$this->builder->getOption('cc', null)) {
             call_user_func_array(
