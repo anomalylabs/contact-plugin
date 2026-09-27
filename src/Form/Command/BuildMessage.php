@@ -53,13 +53,12 @@ class BuildMessage
     {
         $input = $this->builder->getFormValues()->all();
 
+        $recipient = $config->get('anomaly.plugin.contact::contact.email');
+
         $to = $parser->parse(
             (array)$this->builder->getOption(
                 'to',
-                $settings->get(
-                    'streams::contact_email',
-                    $config->get('anomaly.plugin.contact::contact.email')
-                )
+                $settings->value('streams::contact_email', $recipient) ?: $recipient
             ),
             $input
         );
@@ -86,15 +85,14 @@ class BuildMessage
             );
         }
 
+        $sender = $config->get('mail.from.address');
+
         call_user_func_array(
             [$this->message, 'from'],
             $parser->parse(
                 (array)$this->builder->getOption(
                     'from',
-                    $settings->get(
-                        'streams::server_email',
-                        $config->get('mail.from.address')
-                    )
+                    $settings->value('streams::server_email', $sender) ?: $sender
                 ),
                 $input
             )
