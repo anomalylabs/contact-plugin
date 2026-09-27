@@ -4,6 +4,8 @@ use Anomaly\ContactPlugin\Form\Command\BuildMessage;
 use Anomaly\ContactPlugin\Form\Command\GetMessageData;
 use Anomaly\ContactPlugin\Form\Command\GetMessageView;
 use Anomaly\Streams\Platform\Message\MessageBag;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 
@@ -22,12 +24,35 @@ class ContactFormHandler
      * @param ContactFormBuilder $builder
      * @param MessageBag         $messages
      * @param Mailer             $mailer
+     * @param RateLimiter        $limiter
+     * @param Request            $request
      */
-    public function handle(ContactFormBuilder $builder, MessageBag $messages, Mailer $mailer)
-    {
+    public function handle(
+        ContactFormBuilder $builder,
+        MessageBag $messages,
+        Mailer $mailer,
+        RateLimiter $limiter,
+        Request $request
+    ) {
         // Validation failed!
         if ($builder->hasFormErrors()) {
             return;
+        }
+
+        $attempts = (int)$builder->getFormOption('throttle', config('anomaly.plugin.contact::contact.throttle.attempts', 5));
+        $decay    = (int)$builder->getFormOption('throttle_decay', config('anomaly.plugin.contact::contact.throttle.decay', 600));
+        $key      = 'anomaly.plugin.contact::' . sha1((string)$request->ip());
+
+        if ($attempts > 0) {
+
+            if ($limiter->tooManyAttempts($key, $attempts)) {
+
+                $messages->error('anomaly.plugin.contact::error.throttled');
+
+                return;
+            }
+
+            $limiter->hit($key, $decay);
         }
 
         // Delegate these for now.
