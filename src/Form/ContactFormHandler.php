@@ -65,19 +65,28 @@ class ContactFormHandler
         };
 
         // Send the email.
-        $sent = $mailer->send($view, $data, $message);
+        try {
+            $sent = $mailer->send($view, $data, $message);
+        } catch (\Throwable $exception) {
+            logger()->error('anomaly/contact-plugin: unable to send contact message', [
+                'exception' => $exception,
+            ]);
+
+            $sent = null;
+        }
 
         // If the message was not sent, report.
         if (!$sent) {
             $messages->error(
                 $builder->getFormOption('error_message', 'anomaly.plugin.contact::error.send_message')
             );
-        } else {
-            // Otherwise, show success.
-            $messages->success(
-                $builder->getFormOption('success_message', 'anomaly.plugin.contact::success.send_message')
-            );
+
+            return;
         }
+
+        $messages->success(
+            $builder->getFormOption('success_message', 'anomaly.plugin.contact::success.send_message')
+        );
 
         // Clear the form!
         $builder->resetForm();
