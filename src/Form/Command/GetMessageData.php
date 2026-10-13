@@ -43,7 +43,7 @@ class GetMessageData
         return [
             'form' => $this->builder->getFormPresenter(),
             'fields' => $decorator->decorate($this->builder->getFormFields()),
-            'subject' => $parser->parse(
+            'subject' => $parser->parseData(
                 $this->builder->getOption('subject', 'Contact Request'),
                 $this->builder->getFormValues()->all()
             ),

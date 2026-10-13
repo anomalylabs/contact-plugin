@@ -56,7 +56,7 @@ class BuildMessage
         $recipient = $config->get('anomaly.plugin.contact::contact.email');
 
         $to = $this->addresses(
-            $parser->parse(
+            $parser->parseData(
                 (array)$this->builder->getOption(
                     'to',
                     $settings->value('streams::contact_email', $recipient) ?: $recipient
@@ -75,11 +75,11 @@ class BuildMessage
             $this->message->to($address);
         }
 
-        foreach ($this->addresses($parser->parse((array)$this->builder->getOption('cc', null), $input)) as $address) {
+        foreach ($this->addresses($parser->parseData((array)$this->builder->getOption('cc', null), $input)) as $address) {
             $this->message->cc($address);
         }
 
-        foreach ($this->addresses($parser->parse((array)$this->builder->getOption('bcc', null), $input)) as $address) {
+        foreach ($this->addresses($parser->parseData((array)$this->builder->getOption('bcc', null), $input)) as $address) {
             $this->message->bcc($address);
         }
 
@@ -87,7 +87,7 @@ class BuildMessage
 
         call_user_func_array(
             [$this->message, 'from'],
-            $parser->parse(
+            $parser->parseData(
                 (array)$this->builder->getOption(
                     'from',
                     $settings->value('streams::server_email', $sender) ?: $sender
@@ -98,7 +98,7 @@ class BuildMessage
 
         call_user_func_array(
             [$this->message, 'subject'],
-            (array)$parser->parse(
+            (array)$parser->parseData(
                 $this->builder->getOption('subject', 'Contact Request'),
                 $input
             )
